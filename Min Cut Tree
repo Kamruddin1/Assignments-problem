@@ -1,0 +1,92 @@
+Min Cut Tree
+medium
+hint
+Hint
+
+Time Limit: 2 sec
+Memory Limit: 128000 kB
+Problem Statement
+Given an integer K and an array height[] of size N, where height[i] denotes the height of the ith tree in a forest. The task is to make a cut of height X from the ground such that at max K unit wood is collected. Find the minimum value of X
+
+If you make a cut of height X from the ground then every tree with a height greater than X will be reduced to X and remaining part of wood can be collected
+Input
+The first line contains two integers N and K.
+Next line contains N integers denoting the elements of the array height[]
+
+Constraints
+1 <= N <= 100000
+1 <= arr[i] <= 100000
+1 <= K <= 10000000
+Output
+Print a single integer the value of X.
+Example
+Sample Input:
+4 2
+1 2 1 2
+
+Sample Output:
+1
+
+Explanation:
+Make a cut at height 1, the updated array will be {1, 1, 1, 1} and
+the collected wood will be {0, 1, 0, 1} i. e. 0 + 1 + 0 + 1 = 2.
+
+=============================================================================================
+
+import java.io.*; // for handling input/output
+import java.util.*; // contains Collections framework
+
+// don't change the name of this class
+// you can add inner classes if needed
+class Main {
+   
+    static int woodCollected(int a[], int x){
+        int sum = 0;
+        for(int i=0; i<a.length; i++){
+            if(a[i] > x){
+                sum += a[i] - x;
+            }
+        }
+
+        return sum;
+    }
+
+    static int findMinCut(int a[], int h, int k){
+
+        int l = 0;
+        int r = h;
+
+        int minCut = h;
+
+        while(l<=r){
+            int m = l + (r-l)/2;
+            if(woodCollected(a, m) > k){
+                l = m+1;
+            }
+            else {
+                r = m-1;
+                minCut = Math.min(minCut, m);
+            }
+
+        }
+
+        return minCut;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); 
+        int k = sc.nextInt(); 
+        int a[] = new int[n];
+
+        int h = -1;
+        for(int i=0; i<n; i++){
+            a[i] = sc.nextInt();
+            h = Math.max(h, a[i]);
+        }
+
+        int ans = findMinCut(a, h, k);
+        System.out.println(ans);
+    }
+}
