@@ -1,0 +1,84 @@
+Increasing Frequency Sort
+easy
+asked in interviews by 1 company
+Time Limit: 2 sec
+Memory Limit: 128000 kB
+Problem Statement
+Given an array of integers nums, sort the array in increasing order based on the frequency of the values. If multiple values have the same frequency, sort them in decreasing order.
+Input
+The first line of the input contains n ( length of num )
+The second line contains the array num.
+
+Constraints
+1 <= nums. length <= 100
+-100 <= nums[i] <= 100
+Output
+Print the sorted array
+Example
+Sample Input
+6
+1 1 2 2 2 3
+
+Sample Output
+3 1 1 2 2 2
+
+Explanation: '
+3' has a frequency of 1, '1' has a frequency of 2, and '2' has a frequency of 3.
+
+==============================================================================================
+
+import java.io.*; // for handling input/output
+import java.util.*; // contains Collections framework
+
+// don't change the name of this class
+// you can add inner classes if needed
+class Main {
+    public static void main (String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        //Num --> Count Pair
+        HashMap<Integer, Integer> freq = new HashMap<>();
+        for(int i=0; i<n; i++){
+            int num = sc.nextInt();
+            if(!freq.containsKey(num)){
+                freq.put(num, 1);
+            }
+            else {
+                int count = freq.get(num);
+                freq.put(num, count+1);
+            }
+        }
+
+
+        //Count --> Numbers(List<Num>) Pair
+        TreeMap<Integer, ArrayList<Integer>> freqRev = new TreeMap<>();
+        for(Map.Entry<Integer, Integer> entry : freq.entrySet()){
+
+            int count = entry.getValue();
+            int num = entry.getKey();
+
+            if(!freqRev.containsKey(count)){
+                ArrayList<Integer> nums = new ArrayList<>();
+                nums.add(num);
+                freqRev.put(count, nums);
+            }
+            else {
+                ArrayList<Integer> nums = freqRev.get(count);
+                nums.add(num);
+                freqRev.put(count, nums);
+            }
+        }    
+            for(Map.Entry<Integer, ArrayList<Integer>> entry : freqRev.entrySet()) {
+            int count = entry.getKey();
+            ArrayList<Integer> nums = entry.getValue();
+             Collections.sort(nums, Collections.reverseOrder());
+            for(int i=0; i<nums.size(); i++){
+                int num = nums.get(i);
+                for(int j=0; j<count; j++)
+                    System.out.print(num + " ");
+            }
+        }
+    }
+}
