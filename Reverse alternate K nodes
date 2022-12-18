@@ -1,0 +1,93 @@
+Reverse alternate K nodes
+medium
+Problem Statement
+Given a linked list consisting of N nodes and an integer K, your task is to reverse every alternate K nodes.
+
+In other words , you have to reverse first k nodes , then skip the next k nodes , then reverse next k nodes and so on .
+
+NOTE: if there are not K nodes to reverse then reverse all the nodes left (See example for better understanding)
+Input
+User Task:
+Since this will be a functional problem, you don't have to take input. You just have to complete the function ReverseAlternateK() that takes head node and K as parameter.
+
+Constraints:
+1 <=k<=N<=10000
+Output
+Return the head of the modified linked list.
+Example
+Sample Input:-
+8 3
+1 2 3 4 5 6 7 8
+
+Sample Output:-
+3 2 1 4 5 6 8 7
+
+Explanation:
+[{1 , 2 ,3 } , {4, 5 , 6} , {7 , 8}]
+Reverse 1st segment.
+Skip the 2nd segment.
+Reverse the 3rd segment.
+
+====================================================================
+
+// Reverse alternate K nodes
+
+/*
+class Node {
+    Node next;
+    int val;
+
+    Node(int val) {
+        this.val = val;
+        next = null;
+    }
+}
+*/
+ public static Node ReverseAlternateK(Node head,int k){
+    //enter your code here
+    Node temp = head;
+    Node ansHead = null;
+    Node ansTail = null;
+    
+    while(temp!=null){
+        //Rev
+        Node revHead = null;
+        Node revTail = null;
+        for(int i=0; i<k && temp!=null; i++){
+            if(revHead == null){
+                revHead = temp;
+                revTail = temp;
+                temp = temp.next;
+            }
+            else{
+                Node cur = temp;
+                temp = temp.next;
+                cur.next = revHead;
+                revHead = cur;
+            }
+        }
+
+        if(ansHead == null){
+            ansHead = revHead;
+            ansTail = revTail;
+        }
+        else{
+            ansTail.next = revHead;
+            ansTail = revTail;
+        }
+
+        ansTail.next = temp;
+        
+        //Non-Rev
+        // 4 times
+        for(int i=0; i<k && temp!=null; i++){
+            ansTail = temp;
+            temp = temp.next;
+        }
+    }
+
+    // head = ansHead;
+    // return head;
+    ansTail.next = null;
+    return ansHead;
+}
